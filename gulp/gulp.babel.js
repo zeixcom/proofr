@@ -4,7 +4,7 @@ gulp.task('babel', function() {
   var babel = require('gulp-babel');
   var eslint = require('gulp-eslint');
 
-  return gulp.src('./src/js/*{.es6, .js}')
+  return gulp.src('./src/js/**/*.js')
     .pipe(eslint())
     .pipe(eslint.format())
     .pipe(eslint.failAfterError())
