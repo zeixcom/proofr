@@ -1,0 +1,52 @@
+{
+  "name": "pingu4plugins",
+  "version": "1.0.0",
+  "description": "A boilerplate for creating es6 ready plugins",
+  "main": "dist/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "webpack --env.NODE_ENV=dev",
+    "build": "webpack --env.NODE_ENV=production"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://mbuehrig@github.com/zeixcom/pingu4plugins.git"
+  },
+  "keywords": [
+    "boilerplate",
+    "plugins"
+  ],
+  "author": "Marcel Bührig <marcel.buehrig@zeix.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/zeixcom/pingu4plugins/issues"
+  },
+  "homepage": "https://github.com/zeixcom/pingu4plugins#readme",
+  "devDependencies": {
+    "babel-core": "^6.26.0",
+    "babel-eslint": "^8.0.2",
+    "babel-preset-env": "^1.6.1",
+    "del": "^3.0.0",
+    "eslint": "^4.10.0",
+    "eslint-config-airbnb": "^16.1.0",
+    "eslint-formatter-pretty": "^1.3.0",
+    "eslint-loader": "^1.9.0",
+    "eslint-plugin-import": "^2.8.0",
+    "eslint-plugin-jsx-a11y": "^6.0.2",
+    "eslint-plugin-react": "^7.4.0",
+    "gulp": "^3.9.1",
+    "gulp-babel": "^7.0.0",
+    "gulp-clean-css": "^3.9.0",
+    "gulp-sass": "^3.1.0",
+    "gulp-stylelint": "^5.0.0",
+    "gulp-tap": "^1.0.1",
+    "gulp-uglify": "^3.0.0",
+    "node-sass": "^4.6.0",
+    "run-sequence": "^2.2.0",
+    "stylelint": "^8.2.0"
+  },
+  "dependencies": {
+    "gulp-eslint": "^4.0.0",
+    "require-dir": "^0.3.2"
+  }
+}
