@@ -8,28 +8,18 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
+var _opts = require('./opts');
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var defaultProofrs = {
-  required: function required(value) {
-    return value !== '' && value !== null && typeof value !== 'undefined';
-  }
-};
-
-var typeMap = {
-  email: 'email',
-  number: 'number',
-  tel: 'phone',
-  url: 'url',
-  date: 'date'
-};
 
 var GlobalProofr = function () {
   function GlobalProofr() {
     _classCallCheck(this, GlobalProofr);
 
-    this.proofrs = defaultProofrs;
-    this.typeMap = typeMap;
+    this.proofers = _opts.DEFAULT_PROOFERS;
+    this.typeMap = _opts.TYPE_MAP;
+
+    this.lang = this.getBrowserOrDocLang();
   }
 
   /**
@@ -37,15 +27,16 @@ var GlobalProofr = function () {
    * @param {string} representing the name of the validator
    * See the docs for a full list of all available validators
    * @param {string} the value to validate
+   * @param {Node} the input which has to be validated
    */
 
 
   _createClass(GlobalProofr, [{
     key: 'proof',
-    value: function proof(proofer, value) {
-      if (_typeof(this.proofrs[proofer]) === (typeof undefined === 'undefined' ? 'undefined' : _typeof(undefined))) return this.error('the given validator ' + proofer + ' doesn\'t exist');
+    value: function proof(proofer, value, input) {
+      if (_typeof(this.proofers[proofer]) === (typeof undefined === 'undefined' ? 'undefined' : _typeof(undefined))) return this.error('the given validator ' + proofer + ' doesn\'t exist');
 
-      return this.proofrs[proofer](value);
+      return this.proofers[proofer](value, input);
     }
 
     /**
@@ -59,7 +50,29 @@ var GlobalProofr = function () {
     value: function addProofer(name, handler) {
       if (typeof handler !== 'function') this.error('A handler for a proofer has to be function');
 
-      this.proofrs[name] = handler;
+      this.proofers[name] = handler;
+    }
+
+    /**
+     * Read the browser or doc lang and return it to the global
+     * script to save the language for message strings
+     */
+
+  }, {
+    key: 'getBrowserOrDocLang',
+    value: function getBrowserOrDocLang() {
+      return document.documentElement.lang !== '' ? document.documentElement.lang : navigator.language || navigator.userLanguage;
+    }
+  }, {
+    key: 'getRange',
+    value: function getRange(rangeAttr) {
+      var minRange = /min\s\d+/;
+      var maxRange = /max\s\d+/;
+
+      return {
+        min: minRange.test(rangeAttr) ? minRange.exec(rangeAttr)[0].replace(/min\s/g, '') : null,
+        max: maxRange.test(rangeAttr) ? maxRange.exec(rangeAttr)[0].replace(/max\s/g, '') : null
+      };
     }
 
     /**

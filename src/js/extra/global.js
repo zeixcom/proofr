@@ -13,11 +13,12 @@ export default class GlobalProofr {
    * @param {string} representing the name of the validator
    * See the docs for a full list of all available validators
    * @param {string} the value to validate
+   * @param {Node} the input which has to be validated
    */
-  proof(proofer, value) {
-    if (typeof this.proofrs[proofer] === typeof undefined) return this.error(`the given validator ${proofer} doesn't exist`);
+  proof(proofer, value, input) {
+    if (typeof this.proofers[proofer] === typeof undefined) return this.error(`the given validator ${proofer} doesn't exist`);
     
-    return this.proofrs[proofer](value);
+    return this.proofers[proofer](value, input);
   }
 
   /**
@@ -28,7 +29,7 @@ export default class GlobalProofr {
   addProofer(name, handler) {
     if (typeof handler !== 'function') this.error('A handler for a proofer has to be function');
 
-    this.proofrs[name] = handler;
+    this.proofers[name] = handler;
   }
 
   /**
@@ -37,6 +38,16 @@ export default class GlobalProofr {
    */
   getBrowserOrDocLang() {
     return document.documentElement.lang !== '' ? document.documentElement.lang : navigator.language || navigator.userLanguage;
+  }
+
+  getRange(rangeAttr) {
+    const minRange = /min\s\d+/;
+    const maxRange = /max\s\d+/;
+
+    return {
+      min: minRange.test(rangeAttr) ? minRange.exec(rangeAttr)[0].replace(/min\s/g, '') : null,
+      max: maxRange.test(rangeAttr) ? maxRange.exec(rangeAttr)[0].replace(/max\s/g, '') : null,
+    };
   }
 
   /**
