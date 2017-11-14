@@ -40,16 +40,6 @@ export default class GlobalProofr {
     return document.documentElement.lang !== '' ? document.documentElement.lang : navigator.language || navigator.userLanguage;
   }
 
-  getRange(rangeAttr) {
-    const minRange = /min\s\d+/;
-    const maxRange = /max\s\d+/;
-
-    return {
-      min: minRange.test(rangeAttr) ? minRange.exec(rangeAttr)[0].replace(/min\s/g, '') : null,
-      max: maxRange.test(rangeAttr) ? maxRange.exec(rangeAttr)[0].replace(/max\s/g, '') : null,
-    };
-  }
-
   /**
    * Consoles an error message and returns false
    * @param {string} msg

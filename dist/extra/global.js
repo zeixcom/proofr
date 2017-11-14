@@ -63,17 +63,6 @@ var GlobalProofr = function () {
     value: function getBrowserOrDocLang() {
       return document.documentElement.lang !== '' ? document.documentElement.lang : navigator.language || navigator.userLanguage;
     }
-  }, {
-    key: 'getRange',
-    value: function getRange(rangeAttr) {
-      var minRange = /min\s\d+/;
-      var maxRange = /max\s\d+/;
-
-      return {
-        min: minRange.test(rangeAttr) ? minRange.exec(rangeAttr)[0].replace(/min\s/g, '') : null,
-        max: maxRange.test(rangeAttr) ? maxRange.exec(rangeAttr)[0].replace(/max\s/g, '') : null
-      };
-    }
 
     /**
      * Consoles an error message and returns false

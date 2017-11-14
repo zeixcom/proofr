@@ -5,6 +5,8 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.DEFAULT_PROOFERS = exports.TYPE_MAP = exports.INSTANCE_DEFAULTS = exports.GLOBAL_DEFAULTS = undefined;
 
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
 var _moment = require('moment');
 
 var _moment2 = _interopRequireDefault(_moment);
@@ -54,19 +56,16 @@ var DEFAULT_PROOFERS = exports.DEFAULT_PROOFERS = {
     );
   },
 
-  number: function number(value, input) {
+  number: function number(value, input, range) {
     var isInRange = true;
     var isNumber = !isNaN(parseFloat(value)); //eslint-disable-line
 
-    if (typeof input !== 'undefined') {
-      if (input.hasAttribute('data-proof-range') && isNumber) {
-        var range = proofr.getRange(input.getAttribute('data-proof-range'));
-        var min = range.min;
+    if (typeof range !== 'undefined') {
+      var min = range.min;
 
-        var max = range.max !== null ? range.max : value;
+      var max = range.max !== null ? range.max : value;
 
-        isInRange = value >= min && value <= max;
-      }
+      isInRange = value >= min && value <= max;
     }
 
     return isInRange && isNumber;
@@ -76,9 +75,8 @@ var DEFAULT_PROOFERS = exports.DEFAULT_PROOFERS = {
     return (0, _moment2.default)(value).isValid();
   },
 
-  length: function length(value, input) {
-    if (input.hasAttribute('data-proof-range')) {
-      var range = proofr.getRange(input.getAttribute('data-proof-range'));
+  length: function length(value, input, range) {
+    if ((typeof range === 'undefined' ? 'undefined' : _typeof(range)) !== (typeof undefined === 'undefined' ? 'undefined' : _typeof(undefined))) {
       var min = range.min;
 
       var max = range.max !== null ? range.max : value.length;

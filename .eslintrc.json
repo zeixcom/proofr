@@ -32,6 +32,8 @@
     "localStorage": true,
     "CustomEvent": true,
     "navigator": true,
-    "proofr": true
+    "proofr": true,
+    "Node": true,
+    "HTMLElement": true
   }
 }

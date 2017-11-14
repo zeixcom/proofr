@@ -40,18 +40,15 @@ export const DEFAULT_PROOFERS = {
     /^(0[1-9]\d|(\+|00)(41|423))\d{7,9}/g.test(value)
   ),
 
-  number: (value, input) => {
+  number: (value, input, range) => {
     let isInRange = true;
     const isNumber = !isNaN(parseFloat(value)); //eslint-disable-line
     
-    if (typeof input !== 'undefined') {
-      if (input.hasAttribute('data-proof-range') && isNumber) {
-        const range = proofr.getRange(input.getAttribute('data-proof-range'));
-        const { min } = range;
-        const max = range.max !== null ? range.max : value;
-  
-        isInRange = value >= min && value <= max;
-      }
+    if (typeof range !== 'undefined') {
+      const { min } = range;
+      const max = range.max !== null ? range.max : value;
+
+      isInRange = value >= min && value <= max;
     }
     
     return isInRange && isNumber;
@@ -61,9 +58,8 @@ export const DEFAULT_PROOFERS = {
     moment(value).isValid()
   ),
 
-  length: (value, input) => {
-    if (input.hasAttribute('data-proof-range')) {
-      const range = proofr.getRange(input.getAttribute('data-proof-range'));
+  length: (value, input, range) => {
+    if (typeof range !== typeof undefined) {
       const { min } = range;
       const max = range.max !== null ? range.max : value.length;
 
