@@ -29,17 +29,37 @@ var Proofr = function () {
 
     this.form = this.parseForm(form);
     this.fields = this.parseFields();
+    this.events = [];
 
-    console.log('this.fields', this.fields);
+    this.form.setAttribute('novalidate', true);
+
+    this.addEventListener();
   }
 
   /**
-   * Gets the form as node by the given param
-   * @param {string|Node|HTMLElement} form
+   * adding all the event listeners
    */
 
 
   _createClass(Proofr, [{
+    key: 'addEventListener',
+    value: function addEventListener() {
+      var _this = this;
+
+      var fieldKeys = Object.keys(this.fields);
+
+      fieldKeys.forEach(function (key) {
+        var field = _this.fields[key];
+        var isArray = typeof field.node === 'array';
+      });
+    }
+
+    /**
+     * Gets the form as node by the given param
+     * @param {string|Node|HTMLElement} form
+     */
+
+  }, {
     key: 'parseForm',
     value: function parseForm(form) {
       var isNode = form instanceof Node || form instanceof HTMLElement;
@@ -52,10 +72,16 @@ var Proofr = function () {
 
       return document.querySelector(form);
     }
+
+    /**
+     * Parsin the form fields and saves them in instance,
+     * so we can access them without requerying them
+     */
+
   }, {
     key: 'parseFields',
     value: function parseFields() {
-      var _this = this;
+      var _this2 = this;
 
       var fieldsQuery = this.form.querySelectorAll('input, select, textarea');
       var fields = {};
@@ -88,8 +114,8 @@ var Proofr = function () {
             field = {
               node: isBoolField ? [fieldNode] : fieldNode,
               type: nodeType,
-              profers: _this.getProofersByField(fieldNode, nodeType),
-              range: fieldNode.hasAttribute('data-proof-range') ? _this.getRangeByField(fieldNode) : undefined
+              profers: _this2.getProofersByField(fieldNode, nodeType),
+              range: fieldNode.hasAttribute('data-proof-range') ? _this2.getRangeByField(fieldNode) : undefined
             };
 
             fields[nodeName] = field;
@@ -99,6 +125,13 @@ var Proofr = function () {
 
       return fields;
     }
+
+    /**
+     * Receives all the proofers by field
+     * @param {Node} field
+     * @param {string} type
+     */
+
   }, {
     key: 'getProofersByField',
     value: function getProofersByField(node, type) {

@@ -2,7 +2,9 @@ import moment from 'moment';
 
 export const GLOBAL_DEFAULTS = {};
 
-export const INSTANCE_DEFAULTS = {};
+export const INSTANCE_DEFAULTS = {
+  proofOnFocus: true,
+};
 
 /** TYPE MAP which maps certain input types to validators */
 export const TYPE_MAP = {

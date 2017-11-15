@@ -1,17 +1,65 @@
 import GlobalProofr from './extra/global';
+import { INSTANCE_DEFAULTS } from './extra/opts';
 
 /** Add the global proofr element to window, so its globally available */
 window.proofr = new GlobalProofr();
 
 /** Class representing a proofr instance */
 export default class Proofr {
-  constructor(form) {
+  constructor(form, options = {}) {
     this.fields = {};
 
     this.form = this.parseForm(form);
     this.fields = this.parseFields();
+    this.events = [];
 
-    console.log('this.fields', this.fields);
+    this.options = Object.assign({}, INSTANCE_DEFAULTS, options);
+
+    this.form.setAttribute('novalidate', true);
+
+    this.addEventListener();
+  }
+
+  /**
+   * adding all the event listeners
+   */
+  addEventListener() {
+    if (this.options.proofOnFocus) {
+      this.addFocusOutListeners();
+    }
+  }
+
+  addFocusOutListeners() {
+    const fieldKeys = Object.keys(this.fields);
+    
+    fieldKeys.forEach((key) => {
+      const field = this.fields[key];
+      const isArray = field.node instanceof Array;
+
+      if (isArray) {
+        field.node.forEach((node) => {
+          const handler = () => {
+            this.proofField(field);
+          };
+
+          node.addEventListener('focusout', handler);
+          this.events.push({
+            node,
+            handler,
+          });
+        });
+      } else {
+        const handler = () => {
+          this.proofField(field);
+        };
+
+        field.node.addEventListener('focusout', handler);
+        this.events.push({
+          node: field.node,
+          handler,
+        });
+      }
+    });
   }
 
   /**
@@ -30,6 +78,10 @@ export default class Proofr {
     return document.querySelector(form);
   }
 
+  /**
+   * Parsin the form fields and saves them in instance,
+   * so we can access them without requerying them
+   */
   parseFields() {
     const fieldsQuery = this.form.querySelectorAll('input, select, textarea');
     const fields = {};
@@ -74,6 +126,11 @@ export default class Proofr {
     return fields;
   }
 
+  /**
+   * Receives all the proofers by field
+   * @param {Node} field
+   * @param {string} type
+   */
   getProofersByField(node, type) {
     let proofers = [];
 
