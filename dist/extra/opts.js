@@ -15,7 +15,14 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var GLOBAL_DEFAULTS = exports.GLOBAL_DEFAULTS = {};
 
-var INSTANCE_DEFAULTS = exports.INSTANCE_DEFAULTS = {};
+var INSTANCE_DEFAULTS = exports.INSTANCE_DEFAULTS = {
+  proofOnFocus: true,
+  proofOnSubmit: true,
+  errorClass: 'proofr-error',
+  groupClass: 'proofr-group',
+  listClass: 'proofr-list',
+  hasErrorMessages: true
+};
 
 /** TYPE MAP which maps certain input types to validators */
 var TYPE_MAP = exports.TYPE_MAP = {
@@ -28,7 +35,15 @@ var TYPE_MAP = exports.TYPE_MAP = {
 
 /** DEFAULT PROOFERS  */
 var DEFAULT_PROOFERS = exports.DEFAULT_PROOFERS = {
-  required: function required(value) {
+  required: function required(value, input) {
+    if (input instanceof Array) {
+      var inputsWithChecked = input.filter(function (inputNode) {
+        return inputNode.checked;
+      });
+
+      return inputsWithChecked.length > 0;
+    }
+
     return value !== '' && value !== null && typeof value !== 'undefined';
   },
 

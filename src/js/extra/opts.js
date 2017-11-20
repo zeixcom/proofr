@@ -4,6 +4,11 @@ export const GLOBAL_DEFAULTS = {};
 
 export const INSTANCE_DEFAULTS = {
   proofOnFocus: true,
+  proofOnSubmit: true,
+  errorClass: 'proofr-error',
+  groupClass: 'proofr-group',
+  listClass: 'proofr-list',
+  hasErrorMessages: true,
 };
 
 /** TYPE MAP which maps certain input types to validators */
@@ -17,9 +22,17 @@ export const TYPE_MAP = {
 
 /** DEFAULT PROOFERS  */
 export const DEFAULT_PROOFERS = {
-  required: value => (
-    value !== '' && value !== null && typeof value !== 'undefined'
-  ),
+  required: (value, input) => {
+    if (input instanceof Array) {
+      const inputsWithChecked = input.filter(inputNode => (
+        inputNode.checked
+      ));
+
+      return inputsWithChecked.length > 0;
+    }
+
+    return value !== '' && value !== null && typeof value !== 'undefined';
+  },
 
   pattern: (value, input) => {
     if (typeof input === 'undefined') return proofr.error('There is no node defined, therefore we cant extract the pattern');

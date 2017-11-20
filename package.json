@@ -47,8 +47,10 @@
     "stylelint": "^8.2.0"
   },
   "dependencies": {
+    "element-closest": "^2.0.2",
     "gulp-eslint": "^4.0.0",
     "moment": "^2.19.2",
+    "polyfill-nodelist-foreach2": "^1.0.1",
     "require-dir": "^0.3.2"
   }
 }

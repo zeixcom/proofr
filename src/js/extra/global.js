@@ -1,11 +1,18 @@
 import { TYPE_MAP, DEFAULT_PROOFERS } from './opts';
 
+import enMessages from './lang/en.lang';
+import deMessages from './lang/de.lang';
+
 export default class GlobalProofr {
   constructor() {
     this.proofers = DEFAULT_PROOFERS;
     this.typeMap = TYPE_MAP;
 
     this.lang = this.getBrowserOrDocLang();
+    this.messages = {
+      en: enMessages,
+      de: deMessages,
+    };
   }
 
   /**
@@ -37,7 +44,20 @@ export default class GlobalProofr {
    * script to save the language for message strings
    */
   getBrowserOrDocLang() {
-    return document.documentElement.lang !== '' ? document.documentElement.lang : navigator.language || navigator.userLanguage;
+    const docLang = document.documentElement.lang !== '' ? document.documentElement.lang : navigator.language || navigator.userLanguage;
+
+    return docLang.replace(/-[A-Z]+/g, '');
+  }
+
+  /**
+   * Returns a lang message according to params
+   * @param {String} title is the attribute which determines what the error says for e.g. required
+   * @param {String} target normally string field or form. Determines if the
+   * message is for the field only or the whole form.
+   */
+  getLangMessage(title) {
+    return typeof this.messages[this.lang][title] !== typeof undefined
+      ? this.messages[this.lang][title] : this.messages[this.lang].default;
   }
 
   /**

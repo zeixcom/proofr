@@ -10,6 +10,16 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _opts = require('./opts');
 
+var _en = require('./lang/en.lang');
+
+var _en2 = _interopRequireDefault(_en);
+
+var _de = require('./lang/de.lang');
+
+var _de2 = _interopRequireDefault(_de);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var GlobalProofr = function () {
@@ -20,6 +30,10 @@ var GlobalProofr = function () {
     this.typeMap = _opts.TYPE_MAP;
 
     this.lang = this.getBrowserOrDocLang();
+    this.messages = {
+      en: _en2.default,
+      de: _de2.default
+    };
   }
 
   /**
@@ -61,7 +75,22 @@ var GlobalProofr = function () {
   }, {
     key: 'getBrowserOrDocLang',
     value: function getBrowserOrDocLang() {
-      return document.documentElement.lang !== '' ? document.documentElement.lang : navigator.language || navigator.userLanguage;
+      var docLang = document.documentElement.lang !== '' ? document.documentElement.lang : navigator.language || navigator.userLanguage;
+
+      return docLang.replace(/-[A-Z]+/g, '');
+    }
+
+    /**
+     * Returns a lang message according to params
+     * @param {String} title is the attribute which determines what the error says for e.g. required
+     * @param {String} target normally string field or form. Determines if the
+     * message is for the field only or the whole form.
+     */
+
+  }, {
+    key: 'getLangMessage',
+    value: function getLangMessage(title) {
+      return _typeof(this.messages[this.lang][title]) !== (typeof undefined === 'undefined' ? 'undefined' : _typeof(undefined)) ? this.messages[this.lang][title] : this.messages[this.lang].default;
     }
 
     /**
