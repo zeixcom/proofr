@@ -1,5 +1,3 @@
-import moment from 'moment';
-
 import { TYPE_MAP, DEFAULT_PROOFERS } from './opts';
 
 import enMessages from './lang/en.lang';
@@ -11,8 +9,12 @@ export default class GlobalProofr {
     this.typeMap = TYPE_MAP;
 
     this.lang = this.getBrowserOrDocLang();
-
-    moment.locale('de');
+    this.dateFormats = [
+      'YYYY-MM-DD',
+      'DD.MM.YYYY',
+      'DD/MM/YYYY',
+      'DD-MM-YYYY',
+    ];
 
     this.messages = {
       en: enMessages,
@@ -39,9 +41,24 @@ export default class GlobalProofr {
    * @param {function} given handler fn
    */
   addProofer(name, handler) {
-    if (typeof handler !== 'function') this.error('A handler for a proofer has to be function');
+    if (typeof handler !== 'function') return this.error('A handler for a proofer has to be function');
 
     this.proofers[name] = handler;
+
+    return this.proofers[name];
+  }
+
+  /**
+   * Extending a language
+   * @param {String} lang two letter code of the lang (default (de/en/fr/it))
+   * @param {Objects} langStrings the lang strings for the proofers
+   */
+  extendLang(lang, langStrings) {
+    if (typeof this.messages[lang] === typeof undefined) return this.error(`The lang ${lang} can't be extended, because it doesn't exist`);
+
+    this.messages[lang] = Object.assign({}, this.messages[lang], langStrings);
+
+    return this.messages;
   }
 
   /**
@@ -63,6 +80,34 @@ export default class GlobalProofr {
   getLangMessage(title) {
     return typeof this.messages[this.lang][title] !== typeof undefined
       ? this.messages[this.lang][title] : this.messages[this.lang].default;
+  }
+
+  /**
+   * Sets the date format according to the given string
+   * @param {String} format (eu / uk / usa)
+   */
+  setDateFormat(format) {
+    switch (format) {
+      case 'eu':
+        this.dateFormats = [
+          'YYYY-MM-DD',
+          'DD.MM.YYYY',
+          'DD/MM/YYYY',
+          'DD-MM-YYYY',
+        ];
+        break;
+      case 'uk':
+      case 'usa':
+        this.dateFormats = [
+          'YYYY-MM-DD',
+          'MM.DD.YYYY',
+          'MM/DD/YYYY',
+          'MM-DD-YYYY',
+        ];
+        break;
+      default:
+        break;
+    }
   }
 
   /**

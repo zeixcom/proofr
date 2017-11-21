@@ -136,7 +136,7 @@ export default class Proofr {
     field.proofers.forEach((proof) => {
       results[proof] = proofr.proof(proof, value, field.node, field.range);
 
-      if ((value === '' || typeof value === typeof undefined || value === null) && proof !== 'required') {
+      if ((value === '' || typeof value === typeof undefined || value === null) && (proof !== 'required' && !/^check/g.test(proof))) {
         results[proof] = true;
       }
     });
@@ -293,7 +293,7 @@ export default class Proofr {
           field = {
             node: isBoolField ? [fieldNode] : fieldNode,
             type: nodeType,
-            proofers: this.getProofersByField(fieldNode, nodeType),
+            proofers: this.getProofersByField(fieldNode, nodeType, isBoolField),
             range: fieldNode.hasAttribute('data-proof-range') ? this.getRangeByField(fieldNode) : undefined,
             group: fieldNode.closest(`.${this.options.groupClass}`),
           };
@@ -310,11 +310,15 @@ export default class Proofr {
    * Receives all the proofers by field
    * @param {Node} field
    * @param {string} type
+   * @param {boolean} isBoolField
    */
-  getProofersByField(node, type) {
+  getProofersByField(node, type, isBoolField) {
     let proofers = [];
 
-    if (node.hasAttribute('required')) proofers.push('required');
+    if (node.hasAttribute('required') && !isBoolField) {
+      proofers.push('required');
+    }
+
 
     if (proofr.typeMap[type]) proofers.push(proofr.typeMap[type]);
 
