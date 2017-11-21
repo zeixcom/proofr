@@ -14,6 +14,9 @@ const messages = {
   min: 'This value should be greater than or equal to %min',
   max: 'This value should be lower than or equal to %max',
   default: 'This value seems to be invalid',
+  checkrange: 'Please select between %min and %max options',
+  checkmin: 'Please select atleast %min',
+  checkmax: 'Please select atmost %max',
 };
 
 export default messages;

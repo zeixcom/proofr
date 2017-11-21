@@ -53,10 +53,23 @@ export default class GlobalProofr {
    * @param {String} lang two letter code of the lang (default (de/en/fr/it))
    * @param {Objects} langStrings the lang strings for the proofers
    */
-  extendLang(lang, langStrings) {
+  extendOverwriteLang(lang, langStrings) {
     if (typeof this.messages[lang] === typeof undefined) return this.error(`The lang ${lang} can't be extended, because it doesn't exist`);
 
     this.messages[lang] = Object.assign({}, this.messages[lang], langStrings);
+
+    return this.messages;
+  }
+
+  /**
+   * Adding a new language
+   * @param {String} twolettercode for lang
+   * @param {Object} langStrings object with all the messages
+   */
+  addLang(lang, langStrings) {
+    if (typeof this.messages[lang] !== typeof undefined) return this.error(`The lang ${lang} does already exist, please use proofr.extendOverwriteLang() to extend a language`);
+
+    this.messages[lang] = langStrings;
 
     return this.messages;
   }
@@ -78,8 +91,10 @@ export default class GlobalProofr {
    * message is for the field only or the whole form.
    */
   getLangMessage(title) {
-    return typeof this.messages[this.lang][title] !== typeof undefined
-      ? this.messages[this.lang][title] : this.messages[this.lang].default;
+    const lang = typeof this.messages[this.lang] !== typeof undefined ? this.lang : 'en';
+
+    return typeof this.messages[lang][title] !== typeof undefined
+      ? this.messages[lang][title] : this.messages[lang].default;
   }
 
   /**
@@ -108,6 +123,14 @@ export default class GlobalProofr {
       default:
         break;
     }
+  }
+
+  /**
+   * Setting a user defined language
+   * @param {String} lang two letter code for the lang
+   */
+  setLang(lang) {
+    this.lang = lang;
   }
 
   /**

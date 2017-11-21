@@ -14,6 +14,9 @@ const messages = {
   min: 'Der Wert sollte mindestens %min sein',
   max: 'Der Wert sollte maximal %max sein',
   default: 'Die Eingabe scheint ungültig zu sein',
+  checkrange: 'Bitte wählen Sie %min bis %max Optionen aus',
+  checkmin: 'Bitte wählen Sie mindestens %min aus',
+  checkmax: 'Bitte wählen Sie maximal %max aus',
 };
 
 export default messages;
