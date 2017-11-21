@@ -65,4 +65,7 @@ module.exports = {
     }),
     new StyleLintPlugin({ syntax: 'scss' }),
   ],
+  externals: {
+    moment: 'moment'
+  }
 };

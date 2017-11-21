@@ -14,7 +14,8 @@ module.exports = env => {
           compres: {
             warnings: false,
           },
-          sourceMap: true
+          sourceMap: true,
+          uglifyOptions: { ecma: 8 }
         })
       ]
     })
