@@ -134,7 +134,11 @@ export default class Proofr {
     this.removeErrorMessages(field.group);
 
     field.proofers.forEach((proof) => {
-      results[proof] = proofr.proof(proof, value, field.node);
+      results[proof] = proofr.proof(proof, value, field.node, field.range);
+
+      if ((value === '' || typeof value === typeof undefined || value === null) && proof !== 'required') {
+        results[proof] = true;
+      }
     });
 
     const resultsKey = Object.keys(results);

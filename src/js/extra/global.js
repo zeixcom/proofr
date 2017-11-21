@@ -1,3 +1,5 @@
+import moment from 'moment';
+
 import { TYPE_MAP, DEFAULT_PROOFERS } from './opts';
 
 import enMessages from './lang/en.lang';
@@ -9,6 +11,9 @@ export default class GlobalProofr {
     this.typeMap = TYPE_MAP;
 
     this.lang = this.getBrowserOrDocLang();
+
+    moment.locale('de');
+
     this.messages = {
       en: enMessages,
       de: deMessages,
@@ -22,10 +27,10 @@ export default class GlobalProofr {
    * @param {string} the value to validate
    * @param {Node} the input which has to be validated
    */
-  proof(proofer, value, input) {
+  proof(proofer, value, input, range) {
     if (typeof this.proofers[proofer] === typeof undefined) return this.error(`the given validator ${proofer} doesn't exist`);
-    
-    return this.proofers[proofer](value, input);
+
+    return this.proofers[proofer](value, input, range);
   }
 
   /**

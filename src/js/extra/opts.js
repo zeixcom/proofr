@@ -15,7 +15,6 @@ export const INSTANCE_DEFAULTS = {
 export const TYPE_MAP = {
   email: 'email',
   number: 'number',
-  tel: 'phone',
   url: 'url',
   date: 'date',
 };
@@ -55,23 +54,30 @@ export const DEFAULT_PROOFERS = {
     /^(0[1-9]\d|(\+|00)(41|423))\d{7,9}/g.test(value)
   ),
 
-  number: (value, input, range) => {
-    let isInRange = true;
-    const isNumber = !isNaN(parseFloat(value)); //eslint-disable-line
-    
+  number: value => (
+    !isNaN(parseFloat(value)) //eslint-disable-line
+  ),
+
+  range: (value, input, range) => {
+    const parsedValue = parseFloat(value);
+
     if (typeof range !== 'undefined') {
       const { min } = range;
-      const max = range.max !== null ? range.max : value;
+      const max = range.max !== null ? range.max : parsedValue;
 
-      isInRange = value >= min && value <= max;
+      return parsedValue >= min && parsedValue <= max;
     }
     
-    return isInRange && isNumber;
+    return false;
   },
 
-  date: value => (
-    moment(value).isValid()
-  ),
+  date: (value) => {
+    moment.locale('de');
+
+    console.log(moment.locale());
+
+    return moment(value).isValid();
+  },
 
   length: (value, input, range) => {
     if (typeof range !== typeof undefined) {
