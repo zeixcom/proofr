@@ -149,7 +149,7 @@ export default class Proofr {
 
     if (!isOkay) {
       failedProofs.forEach((failedProof) => {
-        const message = proofr.getLangMessage(failedProof, 'field');
+        const message = proofr.getLangMessage(failedProof, field.range);
 
         if (message) errorMessages.push(message);
       });

@@ -87,14 +87,17 @@ export default class GlobalProofr {
   /**
    * Returns a lang message according to params
    * @param {String} title is the attribute which determines what the error says for e.g. required
-   * @param {String} target normally string field or form. Determines if the
-   * message is for the field only or the whole form.
+   * @param {Object} max min range
    */
-  getLangMessage(title) {
+  getLangMessage(title, range) {
     const lang = typeof this.messages[this.lang] !== typeof undefined ? this.lang : 'en';
-
-    return typeof this.messages[lang][title] !== typeof undefined
+    let message = typeof this.messages[lang][title] !== typeof undefined
       ? this.messages[lang][title] : this.messages[lang].default;
+
+    message = message.replace(/%min/g, range.min);
+    message = message.replace(/%max/g, range.max);
+
+    return message;
   }
 
   /**
