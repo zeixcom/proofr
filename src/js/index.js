@@ -11,7 +11,7 @@ export default class Proofr {
     this.customErrors = [];
     this.errors = [];
 
-    this.options = Object.assign({}, INSTANCE_DEFAULTS, options);
+    this.options = { ...INSTANCE_DEFAULTS, ...options };
 
     this.form = this.parseForm(form);
 

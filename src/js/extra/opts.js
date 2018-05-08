@@ -118,9 +118,6 @@ export const DEFAULT_PROOFERS = {
 
     const checked = input.filter(item => (item.checked));
 
-    console.log('checked', checked, range);
-    console.log(checked.length >= range.min && checked.length <= range.max);
-
     return checked.length >= range.min && checked.length <= range.max;
   },
   checkmin: (value, input, range) => {
