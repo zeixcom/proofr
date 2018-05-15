@@ -30,6 +30,10 @@
     "Vue": true,
     "_": true,
     "localStorage": true,
-    "CustomEvent": true
+    "CustomEvent": true,
+    "navigator": true,
+    "proofr": true,
+    "Node": true,
+    "HTMLElement": true
   }
 }
