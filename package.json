@@ -1,6 +1,6 @@
 {
   "name": "proofr",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A lightweight javascript form validation tool",
   "main": "dist/index.js",
   "scripts": {
@@ -10,7 +10,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://mbuehrig@github.com/zeixcom/pingu4plugins.git"
+    "url": "git+https://mbuehrig@github.com/zeixcom/proofr.git"
   },
   "keywords": [
     "boilerplate",
@@ -19,9 +19,9 @@
   "author": "Marcel Bührig <marcel.buehrig@zeix.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/zeixcom/pingu4plugins/issues"
+    "url": "https://github.com/zeixcom/proofr/issues"
   },
-  "homepage": "https://github.com/zeixcom/pingu4plugins#readme",
+  "homepage": "https://github.com/zeixcom/proofr#readme",
   "devDependencies": {
     "babel-core": "^6.26.0",
     "babel-eslint": "^8.0.2",
